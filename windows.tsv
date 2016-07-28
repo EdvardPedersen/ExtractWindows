@@ -1,13 +1,17 @@
 Rest	0
 30	270
-Valsalva start	315
-10	13
-17	20
-85	88
-92	95
-160	163
-Valsalva stopp	465
-2	5
+Valsalva start 1	310
+0	3
+Valsalva stopp 1	317
+0	3
+Valsalva start 2	385
+0	3
+Valsalva stopp 2	392
+0	3
+Valsalva start 3	460
+0	3
+Valsalva stopp 3	467
+0	3
 Vippetest start	585
 30	270
 Vippe 20gr	885
