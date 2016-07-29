@@ -1,6 +1,11 @@
 import argparse
 from collections import defaultdict
-		
+import sys
+import traceback
+
+def wait_for_exit():
+	input("Press Enter to exit")
+
 class Configuration:
 	def __init__(self, filename):
 		self.stages = defaultdict(dict)
@@ -72,13 +77,10 @@ def parse_data(input, window, output_file):
           temp_list.sort()
           medians.append(temp_list[len(temp_list)//2])
         except:
-          print "Missing data: " + str(len(conf.stages[s][w][0]))
-          for i in conf.stages[s][w]:
-            if len(i) != 29:
-              print i
+          #print "Missing data: " + str(len(conf.stages[s][w][0]))
           f += 1
           continue
-      print "Stage: " + s + " Window: " + str(w) + " Entries: " + str(i) + " Failed: " + str(f) 
+      #print "Stage: " + s + " Window: " + str(w) + " Entries: " + str(i) + " Failed: " + str(f) 
       results.append([s,w,medians])
  
   results.sort(key=lambda t: t[1][0])
@@ -87,16 +89,21 @@ def parse_data(input, window, output_file):
     result_line += line[0]
     for e in line[2]:
       result_line += "\t" + str(e) 
-    print result_line
+    #print result_line
     out.write(result_line + "\n")
   out.close()
 	
 	
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='Automatic annotation of B2B data')
-  parser.add_argument('-i', action="store", dest="input", help="Input file", required=True)
+  parser.add_argument('-i', action="store", dest="input", help="Input file", default="input.tsv")
   parser.add_argument('-w', action="store", dest="window", help="Window definition file", default="windows.tsv")
   parser.add_argument('-o', action="store", dest="output", help="Output file", default="output.tsv")
   
   args = parser.parse_args()
-  parsed_data = parse_data(args.input, args.window, args.output)
+  try:
+    parsed_data = parse_data(args.input, args.window, args.output)
+    print("Data parsed successfully.")
+  except Exception as e:
+    print(traceback.format_exc())
+  wait_for_exit()
