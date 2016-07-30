@@ -11,7 +11,7 @@ class Configuration:
 		self.stages = defaultdict(dict)
 		cur_stage = "Start"
 		cur_start = 0
-		for l in open(filename):
+		for l in open(filename, encoding="latin1"):
 			splitLine = l.split("\t")
 			try:
 				self.stages[cur_stage][(int(splitLine[0])+cur_start, int(splitLine[1])+cur_start)] = []
@@ -39,8 +39,8 @@ def parse_data(input, window, output_file):
   
   start = 0
   
-  for l in open(input):
-    splitline = l.split("\t")
+  for l in open(input, encoding="latin1"):
+    splitline = l.replace(",",".").split("\t")
     splitline[-1] = splitline[-1].strip()
     try:
       floats = [float(splitline[0])]
@@ -58,7 +58,6 @@ def parse_data(input, window, output_file):
     
     for w in conf.windows:
       if(test_window(w,floats[0])):
-        #print "Found a window (" + str(w) + ") for time: " + splitline[0] + " stage: " + conf.windows[w]
         conf.stages[conf.windows[w]][w].append(floats)
 
   results = list()
@@ -77,10 +76,8 @@ def parse_data(input, window, output_file):
           temp_list.sort()
           medians.append(temp_list[len(temp_list)//2])
         except:
-          #print "Missing data: " + str(len(conf.stages[s][w][0]))
           f += 1
           continue
-      #print "Stage: " + s + " Window: " + str(w) + " Entries: " + str(i) + " Failed: " + str(f) 
       results.append([s,w,medians])
  
   results.sort(key=lambda t: t[1][0])
@@ -89,7 +86,6 @@ def parse_data(input, window, output_file):
     result_line += line[0]
     for e in line[2]:
       result_line += "\t" + str(e) 
-    #print result_line
     out.write(result_line + "\n")
   out.close()
 	
