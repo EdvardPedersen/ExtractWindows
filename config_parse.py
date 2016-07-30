@@ -74,7 +74,10 @@ def parse_data(input, window, output_file):
         try:
           temp_list = [l[i] for l in conf.stages[s][w] if l[i]]
           temp_list.sort()
-          medians.append(temp_list[len(temp_list)//2])
+          if(temp_list):
+            medians.append(temp_list[len(temp_list)//2])
+          else:
+            medians.append(None)
         except:
           f += 1
           continue
